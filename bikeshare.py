@@ -194,7 +194,13 @@ def user_stats(df):
         
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
-
+def tabulate_output(data: pd.Series, headers = ["Label", "Value"]):
+    """preparing data to be displayed by tabulate function"""
+    data_list = [headers]
+    for i, v in data.items():
+        data_list.append([i, v])
+    
+    print(tabulate(data_list, headers="firstrow", tablefmt="grid"))
 
 def main():
     while True:
