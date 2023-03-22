@@ -96,14 +96,11 @@ def time_stats(df):
     common_day = df['Day'].mode()[0]
     common_start_hour = pd.to_datetime(df['Start Time']).dt.hour.mode()[0]
     
-    # format output as tabulate
-    output_table_data = [["Time Unit", "Value"], 
-             ["Common Month", MONTHS[common_month].title()], 
-             ["Common Day", DAYS[common_day].title()], 
-             ["Common Hour", common_start_hour]]
-    output_table = tabulate(output_table_data, headers="firstrow", tablefmt="grid")
-    
-    print(output_table)
+    # extract data and output them
+    table_data = pd.Series({"Common Month":months[common_month].title(),
+                           "Common Day":days[common_day].title(),
+                           "Common Hour":common_start_hour})
+    tabulate_output(table_data, headers=["Time Unit", "Value"])
 
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
