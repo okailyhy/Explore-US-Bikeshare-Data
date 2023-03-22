@@ -69,7 +69,7 @@ def load_data(city, month, day):
     df['Month'] = pd.to_datetime(df['Start Time']).dt.month
     
     #add a new column (Day) with value exctracted from (Start Time)
-    df['Day'] = pd.to_datetime(df['Start Time']).dt.day_of_week
+    df['Day'] = pd.to_datetime(df['Start Time']).dt.dayofweek
         
     # filter by month if applicable
     if month != 'all':
