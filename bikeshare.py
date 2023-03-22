@@ -70,7 +70,6 @@ def load_data(city, month, day):
     
     #add a new column (Day) with value exctracted from (Start Time)
     df['Day'] = pd.to_datetime(df['Start Time']).dt.day_of_week.array
-        
     # filter by month if applicable
     if month != 'all':
         month = MONTHS.index(month)
@@ -98,7 +97,7 @@ def time_stats(df):
     
     # format output as tabulate
     output_table_data = [["Time Unit", "Value"], 
-             ["Common Month", Months[common_month].title()], 
+             ["Common Month", MONTHS[common_month].title()], 
              ["Common Day", DAYS[common_day].title()], 
              ["Common Hour", common_start_hour]]
     output_table = tabulate(output_table_data, headers="firstrow", tablefmt="grid")
