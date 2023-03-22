@@ -98,7 +98,7 @@ def time_stats(df):
     
     # format output as tabulate
     output_table_data = [["Time Unit", "Value"], 
-             ["Common Month", Months[common_month].title()], 
+             ["Common Month", MONTHS[common_month].title()], 
              ["Common Day", DAYS[common_day].title()], 
              ["Common Hour", common_start_hour]]
     output_table = tabulate(output_table_data, headers="firstrow", tablefmt="grid")
