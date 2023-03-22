@@ -66,10 +66,10 @@ def load_data(city, month, day):
     df = pd.read_csv(CITY_DATA[city])
     
     #add a new column (Month) with value exctracted from (Start Time)
-    df['Month'] = pd.to_datetime(df['Start Time']).dt.month.array
+    df['Month'] = pd.to_datetime(df['Start Time']).dt.month
     
     #add a new column (Day) with value exctracted from (Start Time)
-    df['Day'] = pd.to_datetime(df['Start Time']).dt.day_of_week.array
+    df['Day'] = pd.to_datetime(df['Start Time']).dt.day_of_week
         
     # filter by month if applicable
     if month != 'all':
