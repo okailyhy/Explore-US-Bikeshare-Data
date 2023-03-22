@@ -184,11 +184,10 @@ def user_stats(df):
         most_recent_birth = df['Birth Year'][df['Birth Year'].idxmax()]
         common_birth_year = df['Birth Year'].mode()[0]
     
-        birth_data_table = tabulate([["Label", "Value"],
-                                ["Earliest Birth", earliest_birth],
-                                ["Most Recent Birth", most_recent_birth],
-                                ["Common Year", common_birth_year]], headers="firstrow", tablefmt="grid")
-        print("Birth Data Table\n", birth_data_table)
+        birth_data = pd.Series({"Earliest Birth": earliest_birth,
+                  "Most Recent Birth": most_recent_birth,
+                  "Common Year": common_birth_year})
+        tabulate_output(birth_data)
     else:
         print("There is no (Birth Year) in data source")
         
