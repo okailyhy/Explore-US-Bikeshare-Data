@@ -10,7 +10,7 @@ CITY_DATA = { 'chicago': 'chicago.csv',
 MONTHS = ['all','january', 'february', 'march', 'april','may', 'june', 'july',
               'august', 'september', 'october', 'november', 'december']
 
-DAYS = ['all', 'sunday', 'monday', 'tuesday', 'wednsday', 'thursday', 'friday']
+DAYS = ['all', 'sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday']
 
 
 def get_filters():
@@ -23,6 +23,7 @@ def get_filters():
         (str) day - name of the day of week to filter by, or "all" to apply no day filter
     """
     print('Hello! Let\'s explore some US bikeshare data!')
+
     # get user input for city (chicago, new york city, washington).
     while True:
         city = input("Please enter city name (Chicago, New York City or Washington):").lower()
@@ -31,7 +32,6 @@ def get_filters():
         else:
             print('Your input invalid.')
 
-
     # get user input for month (all, january, february, ... , june)
     while True:
         month = input("Please enter month, for all enter all: ").lower()
@@ -39,7 +39,6 @@ def get_filters():
             break
         else:
             print('Your input invalid.')
-
 
     # get user input for day of week (all, monday, tuesday, ... sunday)
     while True:
@@ -50,7 +49,6 @@ def get_filters():
             print('Your input invalid.')
 
     return city, month, day
-
 
 def load_data(city, month, day):
     """
@@ -63,13 +61,15 @@ def load_data(city, month, day):
     Returns:
         df - Pandas DataFrame containing city data filtered by month and day
     """
+
     df = pd.read_csv(CITY_DATA[city])
     
     #add a new column (Month) with value exctracted from (Start Time)
-    df['Month'] = pd.to_datetime(df['Start Time']).dt.month.array
+    df['Month'] = pd.to_datetime(df['Start Time']).dt.month
     
     #add a new column (Day) with value exctracted from (Start Time)
-    df['Day'] = pd.to_datetime(df['Start Time']).dt.day_of_week.array
+    df['Day'] = pd.to_datetime(df['Start Time']).dt.dayofweek
+        
     # filter by month if applicable
     if month != 'all':
         month = MONTHS.index(month)
@@ -84,7 +84,6 @@ def load_data(city, month, day):
 
     return df
 
-
 def time_stats(df):
     """Displays statistics on the most frequent times of travel."""
 
@@ -95,18 +94,14 @@ def time_stats(df):
     common_day = df['Day'].mode()[0]
     common_start_hour = pd.to_datetime(df['Start Time']).dt.hour.mode()[0]
     
-    # format output as tabulate
-    output_table_data = [["Time Unit", "Value"], 
-             ["Common Month", MONTHS[common_month].title()], 
-             ["Common Day", DAYS[common_day].title()], 
-             ["Common Hour", common_start_hour]]
-    output_table = tabulate(output_table_data, headers="firstrow", tablefmt="grid")
-    
-    print(output_table)
+    # extract data and output them
+    table_data = pd.Series({"Common Month":MONTHS[common_month].title(),
+                           "Common Day":DAYS[common_day].title(),
+                           "Common Hour":common_start_hour})
+    tabulate_output(table_data, headers=["Time Unit", "Value"])
 
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
-
 
 def station_stats(df):
     """Displays statistics on the most popular stations and trip."""
@@ -122,16 +117,14 @@ def station_stats(df):
 
     # display most frequent combination of start station and end station trip
     common_combination_stations = df.groupby(["Start Station", "End Station"]).size().idxmax()
-    output_table_data = [["Station", "Value"],
-                   ["Common Start Station", common_start_station],
-                   ["Common End Station", common_end_station],
-                   ["Common Combination Stations", common_combination_stations]]
-    output_table = tabulate(output_table_data, headers="firstrow", tablefmt="grid")
-    print(output_table)
+
+    table_data = pd.Series({"Common Start Station":common_start_station,
+                           "Common End Station":common_end_station,
+                           "Common Combination Stations":common_combination_stations})
+    tabulate_output(table_data, headers=["Station", "Value"])
 
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
-
 
 def trip_duration_stats(df):
     """Displays statistics on the total and average trip duration."""
@@ -155,7 +148,6 @@ def trip_duration_stats(df):
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
 
-
 def user_stats(df):
     """Displays statistics on bikeshare users."""
 
@@ -164,16 +156,16 @@ def user_stats(df):
 
     # Display counts of user types
     usertype_data = df.groupby(['User Type'])['User Type'].count()
-    usertype_output_table = tabulate([usertype_data.index, usertype_data.array], tablefmt="grid")
-    print("Table of User Type: \n", usertype_output_table)
+    
+    print("Table of User Types:")
+    tabulate_output(usertype_data)
 
     # Display counts of gender
     if 'Gender' in df.columns:
         count_of_gender = df.groupby('Gender')['Gender'].count()
-        gender_output_table = tabulate([[count_of_gender.index[0], count_of_gender.array[0]],
-                                    [count_of_gender.index[1], count_of_gender.array[1]]],
-                                   headers=["Gender", "Count"], tablefmt="grid")
-        print("Table of Gender Type: \n", gender_output_table)
+        
+        print("Table of Gender Type: ")
+        tabulate_output(count_of_gender)
     else:
         print("There is no (Gender) in data source")
     
@@ -183,17 +175,25 @@ def user_stats(df):
         most_recent_birth = df['Birth Year'][df['Birth Year'].idxmax()]
         common_birth_year = df['Birth Year'].mode()[0]
     
-        birth_data_table = tabulate([["Label", "Value"],
-                                ["Earliest Birth", earliest_birth],
-                                ["Most Recent Birth", most_recent_birth],
-                                ["Common Year", common_birth_year]], headers="firstrow", tablefmt="grid")
-        print("Birth Data Table\n", birth_data_table)
+        birth_data = pd.Series({"Earliest Birth": earliest_birth,
+                  "Most Recent Birth": most_recent_birth,
+                  "Common Year": common_birth_year})
+        
+        print("Table of Birth data: ")
+        tabulate_output(birth_data)
     else:
         print("There is no (Birth Year) in data source")
         
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
 
+def tabulate_output(data: pd.Series, headers = ["Label", "Value"]):
+    """preparing data to be displayed by tabulate function"""
+    data_list = [headers]
+    for i, v in data.items():
+        data_list.append([i, v])
+    
+    print(tabulate(data_list, headers="firstrow", tablefmt="grid"))
 
 def main():
     while True:
@@ -208,7 +208,6 @@ def main():
         restart = input('\nWould you like to restart? Enter yes or no.\n')
         if restart.lower() != 'yes':
             break
-
 
 if __name__ == "__main__":
 	main()
