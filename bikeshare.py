@@ -95,8 +95,8 @@ def time_stats(df):
     common_start_hour = pd.to_datetime(df['Start Time']).dt.hour.mode()[0]
     
     # extract data and output them
-    table_data = pd.Series({"Common Month":months[common_month].title(),
-                           "Common Day":days[common_day].title(),
+    table_data = pd.Series({"Common Month":MONTHS[common_month].title(),
+                           "Common Day":DAYS[common_day].title(),
                            "Common Hour":common_start_hour})
     tabulate_output(table_data, headers=["Time Unit", "Value"])
 
@@ -155,14 +155,14 @@ def user_stats(df):
     start_time = time.time()
 
     # Display counts of user types
-    usertype_data = df.groupby(['User Type'])['User Type'].count().items()
+    usertype_data = df.groupby(['User Type'])['User Type'].count()
     
     print("Table of User Types:")
     tabulate_output(usertype_data)
 
     # Display counts of gender
     if 'Gender' in df.columns:
-        count_of_gender = df.groupby('Gender')['Gender'].count().items()
+        count_of_gender = df.groupby('Gender')['Gender'].count()
         
         print("Table of Gender Type: ")
         tabulate_output(count_of_gender)
