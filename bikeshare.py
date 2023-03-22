@@ -23,6 +23,7 @@ def get_filters():
         (str) day - name of the day of week to filter by, or "all" to apply no day filter
     """
     print('Hello! Let\'s explore some US bikeshare data!')
+
     # get user input for city (chicago, new york city, washington).
     while True:
         city = input("Please enter city name (Chicago, New York City or Washington):").lower()
@@ -31,7 +32,6 @@ def get_filters():
         else:
             print('Your input invalid.')
 
-
     # get user input for month (all, january, february, ... , june)
     while True:
         month = input("Please enter month, for all enter all: ").lower()
@@ -39,7 +39,6 @@ def get_filters():
             break
         else:
             print('Your input invalid.')
-
 
     # get user input for day of week (all, monday, tuesday, ... sunday)
     while True:
@@ -50,7 +49,6 @@ def get_filters():
             print('Your input invalid.')
 
     return city, month, day
-
 
 def load_data(city, month, day):
     """
@@ -63,6 +61,7 @@ def load_data(city, month, day):
     Returns:
         df - Pandas DataFrame containing city data filtered by month and day
     """
+
     df = pd.read_csv(CITY_DATA[city])
     
     #add a new column (Month) with value exctracted from (Start Time)
@@ -85,7 +84,6 @@ def load_data(city, month, day):
 
     return df
 
-
 def time_stats(df):
     """Displays statistics on the most frequent times of travel."""
 
@@ -104,7 +102,6 @@ def time_stats(df):
 
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
-
 
 def station_stats(df):
     """Displays statistics on the most popular stations and trip."""
@@ -129,7 +126,6 @@ def station_stats(df):
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
 
-
 def trip_duration_stats(df):
     """Displays statistics on the total and average trip duration."""
 
@@ -151,7 +147,6 @@ def trip_duration_stats(df):
     
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
-
 
 def user_stats(df):
     """Displays statistics on bikeshare users."""
@@ -191,7 +186,7 @@ def user_stats(df):
         
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
-    
+
 def tabulate_output(data: pd.Series, headers = ["Label", "Value"]):
     """preparing data to be displayed by tabulate function"""
     data_list = [headers]
@@ -213,7 +208,6 @@ def main():
         restart = input('\nWould you like to restart? Enter yes or no.\n')
         if restart.lower() != 'yes':
             break
-
 
 if __name__ == "__main__":
 	main()
