@@ -160,17 +160,17 @@ def user_stats(df):
     start_time = time.time()
 
     # Display counts of user types
-    usertype_data = df.groupby(['User Type'])['User Type'].count()
-    usertype_output_table = tabulate([usertype_data.index, usertype_data.array], tablefmt="grid")
-    print("Table of User Type: \n", usertype_output_table)
+    usertype_data = df.groupby(['User Type'])['User Type'].count().items()
+    
+    print("Table of User Types:")
+    tabulate_output(usertype_data)
 
     # Display counts of gender
     if 'Gender' in df.columns:
-        count_of_gender = df.groupby('Gender')['Gender'].count()
-        gender_output_table = tabulate([[count_of_gender.index[0], count_of_gender.array[0]],
-                                    [count_of_gender.index[1], count_of_gender.array[1]]],
-                                   headers=["Gender", "Count"], tablefmt="grid")
-        print("Table of Gender Type: \n", gender_output_table)
+        count_of_gender = df.groupby('Gender')['Gender'].count().items()
+        
+        print("Table of Gender Type: ")
+        tabulate_output(count_of_gender)
     else:
         print("There is no (Gender) in data source")
     
@@ -183,12 +183,15 @@ def user_stats(df):
         birth_data = pd.Series({"Earliest Birth": earliest_birth,
                   "Most Recent Birth": most_recent_birth,
                   "Common Year": common_birth_year})
+        
+        print("Table of Birth data: ")
         tabulate_output(birth_data)
     else:
         print("There is no (Birth Year) in data source")
         
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
+    
 def tabulate_output(data: pd.Series, headers = ["Label", "Value"]):
     """preparing data to be displayed by tabulate function"""
     data_list = [headers]
