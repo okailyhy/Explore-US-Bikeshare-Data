@@ -120,12 +120,11 @@ def station_stats(df):
 
     # display most frequent combination of start station and end station trip
     common_combination_stations = df.groupby(["Start Station", "End Station"]).size().idxmax()
-    output_table_data = [["Station", "Value"],
-                   ["Common Start Station", common_start_station],
-                   ["Common End Station", common_end_station],
-                   ["Common Combination Stations", common_combination_stations]]
-    output_table = tabulate(output_table_data, headers="firstrow", tablefmt="grid")
-    print(output_table)
+
+    table_data = pd.Series({"Common Start Station":common_start_station,
+                           "Common End Station":common_end_station,
+                           "Common Combination Stations":common_combination_stations})
+    tabulate_output(table_data, headers=["Station", "Value"])
 
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
