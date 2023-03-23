@@ -198,15 +198,12 @@ def tabulate_output(data: pd.Series, headers = ["Label", "Value"]):
 
 def show_raw_data(df):
     """show raw data upon user request"""
-    view_data = input('\nWould you like to view 5 rows of individual trip data? Enter yes or no\n')
+    next_flag = input('\nWould you like to view 5 rows of individual trip data? Enter yes or no\n').lower()
     start_loc = 0
-    next_flag = True
-    while (next_flag):
+    while (next_flag != "no"):
         print(df[start_loc:start_loc+5])
-        next_req = input('\nDo you wish to show next 5 rows? Enter yes or no\n').lower()
+        next_flag = input('\nDo you wish to show next 5 rows? Enter yes or no\n').lower()
         start_loc += 5
-        if next_req == 'no':
-            next_flag = False
 
 def main():
     while True:
