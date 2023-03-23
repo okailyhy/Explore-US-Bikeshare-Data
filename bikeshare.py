@@ -195,6 +195,18 @@ def tabulate_output(data: pd.Series, headers = ["Label", "Value"]):
     
     print(tabulate(data_list, headers="firstrow", tablefmt="grid"))
 
+def show_raw_data(df):
+    """show raw data upon user request"""
+    view_data = input('\nWould you like to view 5 rows of individual trip data? Enter yes or no\n')
+    start_loc = 0
+    next_flag = True
+    while (next_flag):
+        print(df[start_loc:start_loc+5])
+        next_req = input('\nDo you wish to show next 5 rows? Enter yes or no\n').lower()
+        start_loc += 5
+        if next_req == 'no':
+            next_flag = False
+
 def main():
     while True:
         city, month, day = get_filters()
@@ -204,6 +216,7 @@ def main():
         station_stats(df)
         trip_duration_stats(df)
         user_stats(df)
+        show_raw_data(df)
 
         restart = input('\nWould you like to restart? Enter yes or no.\n')
         if restart.lower() != 'yes':
