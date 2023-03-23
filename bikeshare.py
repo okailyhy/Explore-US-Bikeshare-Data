@@ -69,6 +69,7 @@ def load_data(city, month, day):
     
     #add a new column (Day) with value exctracted from (Start Time)
     df['Day'] = pd.to_datetime(df['Start Time']).dt.dayofweek
+    df['Hour'] = pd.to_datetime(df['Start Time']).dt.hour
         
     # filter by month if applicable
     if month != 'all':
@@ -133,7 +134,7 @@ def trip_duration_stats(df):
     start_time = time.time()
 
     # total travel time in hour
-    total_travel_time = df['Trip Duration'].sum()/60/60
+    total_travel_time = df['Hour'].sum()
 
     # mean travel time in minutes
     mean_travel_time = df['Trip Duration'].mean()/60
